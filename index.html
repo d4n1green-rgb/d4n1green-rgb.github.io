@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angel Systems | Soluciones Web para tu Negocio</title>
+    <meta name="description" content="Transforma tu negocio con una solución a tu medida. Gestión, inventario y ventas con confianza.">
+    <link rel="icon" type="image/webp" href="img/favicon.webp">
+
+    <meta property="og:title" content="Angel Systems | Soluciones Web para tu Negocio">
+    <meta property="og:description" content="Transforma tu negocio con una solución a tu medida. Gestión, inventario y ventas con confianza.">
+    <meta property="og:image" content="https://angel-systems-web.pages.dev/img/poster.webp">
+    <meta property="og:url" content="https://angel-systems-web.pages.dev/">
+    <meta property="og:type" content="website">
+
+    <style>
+        :root {
+            --fondo-blanco: #ffffff;
+            --fondo-gris-claro: #f8f9fa;
+            --azul-oscuro: #0a192f;
+            --azul-brillante: #00a8ff;
+            --amarillo: #facc15;
+            --texto-oscuro: #1f2937;
+            --texto-gris: #4b5563;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--fondo-blanco); color: var(--texto-oscuro); line-height: 1.6; }
+        a { text-decoration: none; color: inherit; }
+
+        /* --- CABECERA --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px; background-color: var(--fondo-blanco);
+            position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .logo-header { height: 45px; width: auto; }
+        .btn-whatsapp-header {
+            background-color: #25D366; color: #ffffff;
+            padding: 8px 15px; border-radius: 20px;
+            font-weight: bold; font-size: 0.9rem;
+            display: flex; align-items: center; gap: 5px;
+        }
+
+        /* --- HERO --- */
+        .hero { padding: 60px 20px; text-align: center; background-color: var(--fondo-gris-claro); }
+        .hero h1 { font-size: 2rem; margin-bottom: 15px; line-height: 1.2; color: var(--azul-oscuro); }
+        .hero h1 span { color: var(--azul-brillante); }
+        .hero p { color: var(--texto-gris); font-size: 1.1rem; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .hero-img { width: 100%; max-width: 500px; border-radius: 15px; margin-top: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); }
+
+        /* --- SERVICIOS --- */
+        .servicios { padding: 60px 20px; max-width: 1000px; margin: 0 auto; background-color: var(--fondo-blanco); }
+        .servicios h2 { text-align: center; font-size: 1.8rem; margin-bottom: 40px; color: var(--azul-oscuro); }
+        .grid-servicios { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        .card {
+            background-color: var(--fondo-blanco); padding: 25px;
+            border-radius: 12px; border: 1px solid #e5e7eb;
+            border-left: 4px solid var(--azul-brillante);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.05); }
+        .card h3 { font-size: 1.2rem; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; color: var(--azul-oscuro); }
+        .card p { color: var(--texto-gris); font-size: 0.95rem; }
+
+        /* --- PROYECTOS --- */
+        .proyectos { padding: 60px 20px; background-color: var(--fondo-gris-claro); }
+        .proyectos h2 { text-align: center; font-size: 1.8rem; margin-bottom: 12px; color: var(--azul-oscuro); }
+        .proyectos .subtitle { text-align: center; color: var(--texto-gris); margin-bottom: 40px; font-size: 0.95rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .grid-proyectos { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 1000px; margin: 0 auto; }
+        .proyecto-card {
+            background-color: var(--fondo-blanco); border-radius: 16px;
+            overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            border: 1px solid #e5e7eb; transition: transform 0.3s, box-shadow 0.3s;
+            display: flex; flex-direction: column;
+        }
+        .proyecto-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.10); }
+        .proyecto-header {
+            background: linear-gradient(135deg, #1e2a38 0%, #2c3e50 100%);
+            padding: 30px 25px; color: #fff;
+        }
+        .proyecto-header .tag {
+            display: inline-block; background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71; padding: 4px 12px; border-radius: 999px;
+            font-size: 0.7rem; font-weight: 800; letter-spacing: 1px;
+            text-transform: uppercase; margin-bottom: 12px;
+        }
+        .proyecto-header h3 { font-size: 1.5rem; margin: 0 0 8px; color: #fff; }
+        .proyecto-header p { font-size: 0.9rem; color: rgba(255,255,255,0.75); margin: 0; }
+        .proyecto-body { padding: 25px; flex: 1; display: flex; flex-direction: column; }
+        .proyecto-body h4 {
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;
+            color: var(--texto-gris); margin-bottom: 8px; font-weight: 800;
+        }
+        .proyecto-body p { font-size: 0.92rem; color: var(--texto-oscuro); margin-bottom: 18px; }
+        .proyecto-body ul { list-style: none; padding: 0; margin: 0 0 20px; }
+        .proyecto-body ul li {
+            padding: 6px 0 6px 24px; position: relative;
+            font-size: 0.88rem; color: var(--texto-gris);
+        }
+        .proyecto-body ul li::before {
+            content: '✓'; position: absolute; left: 0; top: 6px;
+            color: #2ecc71; font-weight: 900;
+        }
+        .proyecto-tech {
+            display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+        }
+        .proyecto-tech span {
+            background: #eef2f6; color: var(--texto-gris);
+            padding: 4px 10px; border-radius: 6px;
+            font-size: 0.72rem; font-weight: 700;
+        }
+        .proyecto-botones { display: flex; gap: 10px; flex-wrap: wrap; margin-top: auto; }
+        .btn-proyecto {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 11px 18px; border-radius: 10px;
+            font-weight: 800; font-size: 0.88rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none; cursor: pointer; text-decoration: none;
+        }
+        .btn-proyecto.primary {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: #fff; box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+        }
+        .btn-proyecto.primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4); }
+        .btn-proyecto.secondary {
+            background: var(--fondo-blanco); color: var(--azul-oscuro);
+            border: 1px solid #e5e7eb;
+        }
+        .btn-proyecto.secondary:hover { background: #f4f6f9; transform: translateY(-2px); }
+
+        /* --- HISTORIA DEL PROYECTO --- */
+        .historia {
+            background: linear-gradient(135deg, #f4f6f9 0%, #ffffff 100%);
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 22px 24px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .historia::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 18px;
+            font-size: 4rem;
+            color: #2ecc71;
+            font-family: Georgia, serif;
+            line-height: 1;
+            opacity: 0.25;
+        }
+        .historia p {
+            font-size: 0.93rem;
+            color: var(--texto-oscuro);
+            line-height: 1.7;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .historia p:last-child { margin-bottom: 0; }
+        .historia .highlight {
+            color: #27ae60;
+            font-weight: 700;
+        }
+
+        /* --- CTA --- */
+        .cta { background-color: var(--azul-oscuro); padding: 60px 20px; text-align: center; color: #ffffff; }
+        .cta h2 { font-size: 1.8rem; margin-bottom: 20px; color: #ffffff; }
+        .cta p { color: #cbd5e1; margin-bottom: 20px; }
+        .btn-grande {
+            display: inline-block; background-color: #25D366; color: #ffffff;
+            padding: 15px 30px; border-radius: 30px;
+            font-weight: bold; font-size: 1.2rem; margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+        }
+        .btn-grande:hover { background-color: #1ebe5d; }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 30px 20px; text-align: center;
+            font-size: 0.9rem; color: var(--texto-gris);
+            background-color: var(--fondo-gris-claro);
+        }
+        .logo-footer { height: 60px; margin-bottom: 10px; opacity: 0.9; }
+
+        /* --- RESPONSIVE --- */
+        @media (min-width: 768px) {
+            .hero h1 { font-size: 3rem; }
+            .grid-servicios { grid-template-columns: 1fr 1fr; }
+            .logo-header { height: 55px; }
+            .grid-proyectos { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CABECERA -->
+    <header>
+        <img src="img/logo-header.webp" alt="Angel Systems" class="logo-header">
+        <a href="https://wa.me/5351188758?text=Hola%20Angel,%20quiero%20informaci%C3%B3n%20sobre%20tus%20servicios" class="btn-whatsapp-header" target="_blank">
+            💬 Contactar
+        </a>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>Transforma tu negocio con una <span>solución a tu medida</span></h1>
+        <p>Gestiona, crece y controla con confianza. Diseño sistemas de gestión específicos para las necesidades de tu negocio, sin complicaciones.</p>
+        <a href="https://wa.me/5351188758?text=Hola%20Angel,%20quiero%20una%20demostraci%C3%B3n%20gratuita" class="btn-grande" target="_blank">
+            Solicitar Demostración Gratuita
+        </a>
+        <br><br>
+        <img src="img/poster.webp" alt="Sistemas de Gestión Angel" class="hero-img">
+    </section>
+
+    <!-- SERVICIOS -->
+    <section class="servicios">
+        <h2>¿Qué ganarás con mi solución?</h2>
+        <div class="grid-servicios">
+            <div class="card">
+                <h3>🛒 Control Total de Ventas</h3>
+                <p>Registra cada transacción de forma rápida y sencilla. Adiós a las cuentas en papel.</p>
+            </div>
+            <div class="card">
+                <h3>📦 Gestión de Inventario</h3>
+                <p>Adiós a las pérdidas de stock. Sabrás exactamente qué tienes y cuándo reponer.</p>
+            </div>
+            <div class="card">
+                <h3>📊 Reportes Financieros Claros</h3>
+                <p>Conoce tus ganancias reales, gastos y rentabilidad al instante.</p>
+            </div>
+            <div class="card">
+                <h3>👥 Administración de Empleados</h3>
+                <p>Controla horarios, permisos y roles de acceso de tu equipo de trabajo.</p>
+            </div>
+            <div class="card">
+                <h3>📱 Acceso Desde Cualquier Lugar</h3>
+                <p>Gestiona tu negocio desde tu teléfono, tablet o computadora, sin estar atado al local.</p>
+            </div>
+            <div class="card">
+                <h3>🎨 Diseño Personalizado</h3>
+                <p>Solo las funciones que necesitas, sin complicaciones innecesarias. Hecho a tu medida.</p>
+            </div>
+            <div class="card">
+                <h3>☁️ Alternativas Online y Offline</h3>
+                <p>Tu negocio siempre activo, con o sin conexión a internet.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROYECTOS / CASOS DE ÉXITO -->
+    <section class="proyectos">
+        <h2>Casos de Éxito</h2>
+        <p class="subtitle">Sistemas reales, en producción, funcionando para negocios cubanos.</p>
+        <div class="grid-proyectos">
+            <div class="proyecto-card">
+                <div class="proyecto-header">
+                    <span class="tag">Sistema POS · En producción</span>
+                    <h3>Mercado Flo</h3>
+                    <p>Punto de venta e inventario para una MIPYME local</p>
+                </div>
+                <div class="proyecto-body">
+
+                    <h4>El punto de partida</h4>
+                    <div class="historia">
+                        <p>Cuando contacté a Odalys, llevaba el control de su negocio con <span class="highlight">hojas de cálculo en Excel</span>. Era un método que funcionaba, sí, pero ya resultaba <span class="highlight">obsoleto</span>: había que introducir todo a mano, los datos no se actualizaban solos y un error de tipeo podía arrastrar descuadres durante semanas.</p>
+                        <p>Lo que necesitaba era algo que <span class="highlight">se adaptara a su forma de trabajar</span>, no al revés. Así que me senté con ella, escuché cada petición, cada detalle de su día a día, y diseñé un programa <span class="highlight">hecho 100% a su medida</span>.</p>
+                        <p>Una decisión clave fue hacerlo <span class="highlight">completamente offline</span>. En Cuba, la conexión a internet es inestable, y un negocio no puede detenerse porque la red falle. Con este sistema, la pérdida de conexión <span class="highlight">dejó de ser un motivo de preocupación</span>: todo funciona igual, con o sin internet.</p>
+                        <p>Después de varios ajustes y pruebas, entregué un programa que le brinda <span class="highlight">seguridad, comodidad y versatilidad</span>. Hoy Odalys gestiona su negocio con confianza, sin depender de Excel ni de la conexión, y con toda la información que necesita a la mano en un par de clics.</p>
+                    </div>
+
+                    <h4>Lo que incluye el sistema</h4>
+                    <ul>
+                        <li>Punto de venta con carrito y cálculo automático</li>
+                        <li>Doble ubicación de stock: almacén e IPV</li>
+                        <li>Registro de traslados, mermas, retiros y entradas</li>
+                        <li>Historiales con filtros por fecha</li>
+                        <li>Reportes exportables como imagen</li>
+                        <li>Copia de seguridad e importación de datos</li>
+                    </ul>
+
+                    <h4>Tecnologías</h4>
+                    <div class="proyecto-tech">
+                        <span>HTML</span>
+                        <span>CSS</span>
+                        <span>JavaScript</span>
+                        <span>IndexedDB</span>
+                        <span>Cloudflare Pages</span>
+                    </div>
+
+                    <div class="proyecto-botones">
+                        <a href="https://mercado-flo-demo.pages.dev" target="_blank" class="btn-proyecto primary">
+                            🔍 Probar Demo
+                        </a>
+                        <a href="https://wa.me/5351188758?text=Hola%20Angel,%20vi%20el%20caso%20de%20Mercado%20Flo%20y%20quiero%20algo%20as%C3%AD%20para%20mi%20negocio" target="_blank" class="btn-proyecto secondary">
+                            💬 Quiero algo así
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aquí puedes añadir más tarjetas de proyectos futuros copiando el bloque <div class="proyecto-card">...</div> -->
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="cta">
+        <h2>¿Estás listo para llevar tu negocio al siguiente nivel?</h2>
+        <p>Contáctame para una demostración gratuita o para conversar sobre cómo puedo crear el sistema ideal para ti.</p>
+        <a href="https://wa.me/5351188758?text=Hola%20Angel,%20estoy%20listo%20para%20llevar%20mi%20negocio%20al%20siguiente%20nivel" class="btn-grande" target="_blank">
+            💬 Hablar con Angel por WhatsApp
+        </a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <img src="img/logo-footer.webp" alt="Angel Systems" class="logo-footer">
+        <p>Tu éxito es mi compromiso.</p>
+        <p>© 2026 Angel Systems. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
