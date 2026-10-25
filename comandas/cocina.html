@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cocina - Angel Systems</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white h-screen flex flex-col font-sans">
+
+    <!-- Header -->
+    <header class="bg-gray-800 p-4 border-b border-gray-700 flex justify-between items-center shadow-lg">
+        <div class="flex items-center space-x-3">
+            <span class="text-3xl">👨‍🍳</span>
+            <div>
+                <h1 class="text-2xl font-bold">Monitor de Cocina</h1>
+                <p class="text-xs text-gray-400">Angel Systems</p>
+            </div>
+        </div>
+        <div class="bg-gray-700 px-4 py-2 rounded-lg text-sm">
+            Estado: <span class="text-green-400 font-bold" id="networkStatus">Recibiendo Órdenes</span>
+        </div>
+    </header>
+
+    <!-- Tablero Kanban -->
+    <main class="flex-1 p-6 grid grid-cols-1 md:grid-cols-3 gap-6 overflow-hidden">
+        
+        <!-- Columna Pendientes -->
+        <div class="bg-gray-800 rounded-xl flex flex-col overflow-hidden shadow-xl">
+            <div class="bg-red-600 p-3 text-center font-bold text-lg shadow">PENDIENTES</div>
+            <div class="flex-1 p-3 overflow-y-auto space-y-3" id="col-pendiente"></div>
+        </div>
+
+        <!-- Columna En Preparación -->
+        <div class="bg-gray-800 rounded-xl flex flex-col overflow-hidden shadow-xl">
+            <div class="bg-yellow-500 p-3 text-center font-bold text-lg text-gray-900 shadow">EN PREPARACIÓN</div>
+            <div class="flex-1 p-3 overflow-y-auto space-y-3" id="col-preparando"></div>
+        </div>
+
+        <!-- Columna Listos -->
+        <div class="bg-gray-800 rounded-xl flex flex-col overflow-hidden shadow-xl">
+            <div class="bg-green-600 p-3 text-center font-bold text-lg shadow">LISTOS PARA SERVIR</div>
+            <div class="flex-1 p-3 overflow-y-auto space-y-3" id="col-listo"></div>
+        </div>
+
+    </main>
+
+    <script>
+        // Canal de comunicación (Escucha al Mesero)
+        const channel = new BroadcastChannel('angel_systems_canal');
+
+        // Escuchar mensajes entrantes
+        channel.onmessage = (event) => {
+            if (event.data.tipo === 'NUEVA_ORDEN') {
+                agregarOrdenAlTablero(event.data.orden);
+                reproducirSonidoAlerta();
+            }
+        };
+
+        // Cargar órdenes existentes al abrir la pantalla (por si se recargó)
+        window.onload = () => {
+            const ordenesGuardadas = JSON.parse(localStorage.getItem('ordenes_angel')) || [];
+            // Mostrar solo las que no estén pagadas/finalizadas
+            ordenesGuardadas.filter(o => o.estado !== 'pagado').forEach(agregarOrdenAlTablero);
+        };
+
+        // Función para crear la tarjeta visual de la orden
+        function agregarOrdenAlTablero(orden) {
+            // Evitar duplicados visuales si se recarga la página
+            if (document.getElementById(`orden-${orden.id}`)) return;
+
+            const columna = document.getElementById(`col-${orden.estado}`);
+            
+            // Generar HTML de los productos
+            let productosHTML = orden.productos.map(p => `
+                <div class="flex justify-between text-sm mb-1 border-b border-gray-700 pb-1">
+                    <span><span class="font-bold text-yellow-400">${p.cantidad}x</span> ${p.nombre}</span>
+                </div>
+            `).join('');
+
+            // Definir botones según el estado
+            let botonesHTML = '';
+            if (orden.estado === 'pendiente') {
+                botonesHTML = `<button onclick="cambiarEstado(${orden.id}, 'preparando')" class="w-full mt-3 bg-yellow-500 text-gray-900 font-bold py-2 rounded shadow hover:bg-yellow-400">Empezar a Preparar</button>`;
+            } else if (orden.estado === 'preparando') {
+                botonesHTML = `<button onclick="cambiarEstado(${orden.id}, 'listo')" class="w-full mt-3 bg-green-600 text-white font-bold py-2 rounded shadow hover:bg-green-500">Marcar como Listo</button>`;
+            } else if (orden.estado === 'listo') {
+                botonesHTML = `<button onclick="cambiarEstado(${orden.id}, 'pagado')" class="w-full mt-3 bg-blue-600 text-white font-bold py-2 rounded shadow hover:bg-blue-500">Entregado / Cobrado</button>`;
+            }
+
+            // Crear elemento
+            const card = document.createElement('div');
+            card.id = `orden-${orden.id}`;
+            card.className = "bg-gray-700 p-4 rounded-lg shadow-md border-l-4 border-blue-500 animate-fade-in-down";
+            card.innerHTML = `
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="font-bold text-lg text-white">${orden.mesa}</h3>
+                    <span class="text-xs text-gray-400">${orden.hora}</span>
+                </div>
+                <div class="mb-2">
+                    ${productosHTML}
+                </div>
+                ${botonesHTML}
+            `;
+
+            columna.appendChild(card);
+        }
+
+        // Función para cambiar de columna
+        function cambiarEstado(id, nuevoEstado) {
+            // 1. Mover visualmente
+            const card = document.getElementById(`orden-${id}`);
+            if (card) card.remove();
+
+            // 2. Actualizar en "Base de Datos" (LocalStorage)
+            let ordenes = JSON.parse(localStorage.getItem('ordenes_angel')) || [];
+            const index = ordenes.findIndex(o => o.id === id);
+            if (index !== -1) {
+                ordenes[index].estado = nuevoEstado;
+                localStorage.setItem('ordenes_angel', JSON.stringify(ordenes));
+                
+                // Volver a dibujar si no es "pagado"
+                if (nuevoEstado !== 'pagado') {
+                    agregarOrdenAlTablero(ordenes[index]);
+                }
+            }
+        }
+
+        // Sonido de alerta (Usando Web Audio API para no necesitar archivos externos)
+        function reproducirSonidoAlerta() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // Nota A5
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.3); // Duración 0.3s
+            } catch (e) {
+                console.log("El navegador bloqueó el audio automático.");
+            }
+        }
+    </script>
+    
+    <!-- Animación simple -->
+    <style>
+        @keyframes fade-in-down {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-down { animation: fade-in-down 0.3s ease-out; }
+    </style>
+</body>
+</html>
