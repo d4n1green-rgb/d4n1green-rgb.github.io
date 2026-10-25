@@ -92,6 +92,11 @@
             background: rgba(243, 156, 18, 0.22);
             color: #f5b041;
         }
+        /* NUEVO ESTILO PARA EL TAG DE DEMO */
+        .proyecto-header .tag.demo {
+            background: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+        }
         .proyecto-header h3 { font-size: 1.5rem; margin: 0 0 8px; color: #fff; }
         .proyecto-header p { font-size: 0.9rem; color: rgba(255,255,255,0.75); margin: 0; }
         .proyecto-body { padding: 25px; flex: 1; display: flex; flex-direction: column; }
@@ -268,8 +273,8 @@
 
     <!-- PROYECTOS / CASOS DE ÉXITO -->
     <section class="proyectos">
-        <h2>Casos de Éxito</h2>
-        <p class="subtitle">Sistemas y webs reales, en producción, funcionando para negocios cubanos.</p>
+        <h2>Casos de Éxito y Demos</h2>
+        <p class="subtitle">Sistemas y webs reales en producción, y demos interactivas creadas para demostrar mis capacidades.</p>
         <div class="grid-proyectos">
 
             <!-- PROYECTO 1: MERCADO FLO -->
@@ -373,6 +378,54 @@
                 </div>
             </div>
 
+            <!-- PROYECTO 3: SISTEMA DE COMANDAS (NUEVO) -->
+            <div class="proyecto-card">
+                <div class="proyecto-header">
+                    <span class="tag demo">Demo Interactiva · Prueba de Capacidades</span>
+                    <h3>Sistema de Comandas & Cocina</h3>
+                    <p>Gestión de pedidos en tiempo real para paladares y cafeterías</p>
+                </div>
+                <div class="proyecto-body">
+
+                    <h4>El punto de partida</h4>
+                    <div class="historia">
+                        <p>Muchos paladares y cafeterías en Cuba pierden dinero y clientes por usar <span class="highlight">comandas en papelitos</span> que se pierden o se demoran en llegar a la cocina. Además, la inestabilidad del internet hace que soluciones extranjeras fallen.</p>
+                        <p>Para solucionar esto, desarrollé esta <span class="highlight">Demo Interactiva</span> que simula un sistema de comunicación en red local (LAN). No requiere internet. La orden sale del celular del mesero y aparece al instante en la pantalla de la cocina.</p>
+                        <p><strong>⚠️ Nota importante:</strong> A diferencia de Mercado Flo o ArcaCubana, este <span class="highlight">no es un programa funcional al aire</span> para ser usado en un negocio real (todavía). Es una <span class="highlight">prueba de concepto</span> creada para demostrar mis capacidades técnicas en el manejo de estados, sincronización de datos y diseño de interfaces, y para mostrar cómo podría ayudar a digitalizar la operación de tu negocio.</p>
+                    </div>
+
+                    <h4>¿Qué puedes probar en la Demo?</h4>
+                    <ul>
+                        <li>Vista de Mesero: Selección de productos y envío de órdenes</li>
+                        <li>Vista de Cocina: Tablero Kanban (Pendiente, Preparando, Listo)</li>
+                        <li>Sincronización en tiempo real entre dos pestañas (Simula la red local)</li>
+                        <li>Simulador de "Modo Offline" con guardado local y posterior sincronización</li>
+                    </ul>
+
+                    <h4>Tecnologías</h4>
+                    <div class="proyecto-tech">
+                        <span>HTML</span>
+                        <span>Tailwind CSS</span>
+                        <span>JavaScript</span>
+                        <span>BroadcastChannel API</span>
+                        <span>LocalStorage</span>
+                    </div>
+
+                    <div class="proyecto-botones">
+                        <!-- Asegúrate de que los archivos estén en la carpeta 'comandas' -->
+                        <a href="./comandas/mesero.html" target="_blank" class="btn-proyecto primary">
+                            📱 Probar Vista Mesero
+                        </a>
+                        <a href="./comandas/cocina.html" target="_blank" class="btn-proyecto secondary">
+                            👨‍🍳 Ver Vista Cocina
+                        </a>
+                        <a href="https://wa.me/5351188758?text=Hola%20Angel,%20vi%20la%20demo%20de%20comandas%20y%20quiero%20algo%20as%C3%AD%20para%20mi%20negocio" target="_blank" class="btn-proyecto secondary" style="width: 100%; justify-content: center; margin-top: 5px;">
+                            💬 Quiero algo así para mi negocio
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -408,4 +461,4 @@
     </script>
 
 </body>
-</html>
+    </html>
