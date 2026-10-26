@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda del Dueño - Angel Systems</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 h-screen flex flex-col font-sans">
+
+    <!-- Header -->
+    <header class="bg-blue-900 text-white p-4 shadow-md flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <span class="text-3xl">💈</span>
+            <div>
+                <h1 class="text-xl font-bold">Agenda de Citas</h1>
+                <p class="text-xs text-blue-300">Panel de Administración</p>
+            </div>
+        </div>
+        <div class="bg-blue-800 px-4 py-2 rounded-lg text-sm flex items-center gap-2">
+            <span class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
+            Escuchando nuevas reservas...
+        </div>
+    </header>
+
+    <!-- Contenido -->
+    <main class="flex-1 p-6 max-w-6xl mx-auto w-full">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Citas Agendadas</h2>
+        
+        <div id="listaCitas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Las citas se inyectan aquí con JS -->
+        </div>
+        
+        <!-- Mensaje si no hay citas -->
+        <div id="emptyState" class="text-center text-gray-500 mt-20">
+            <p class="text-5xl mb-4">📅</p>
+            <p class="text-xl">No hay citas agendadas aún.</p>
+            <p class="text-sm mt-2">Las reservas que hagan los clientes aparecerán aquí.</p>
+        </div>
+    </main>
+
+    <script>
+        // Escuchar el canal
+        const channel = new BroadcastChannel('angel_citas_canal');
+        
+        channel.onmessage = (event) => {
+            if (event.data.tipo === 'NUEVA_CITA') {
+                alert(`🔔 ¡Nueva reserva de ${event.data.cita.nombre} para el ${event.data.cita.fecha}!`);
+                cargarCitas();
+            }
+        };
+
+        // Cargar citas al abrir la página
+        window.onload = cargarCitas;
+
+        function cargarCitas() {
+            const contenedor = document.getElementById('listaCitas');
+            const emptyState = document.getElementById('emptyState');
+            contenedor.innerHTML = ''; // Limpiar
+
+            let citas = JSON.parse(localStorage.getItem('citas_angel')) || [];
+            
+            // Ordenar por fecha y hora
+            citas.sort((a, b) => new Date(a.fecha + 'T' + a.hora) - new Date(b.fecha + 'T' + b.hora));
+
+            if (citas.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            citas.forEach(cita => {
+                // Formatear fecha
+                const fechaObj = new Date(cita.fecha + 'T00:00:00');
+                const fechaFormateada = fechaObj.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short' });
+                
+                const card = document.createElement('div');
+                card.className = "bg-white p-5 rounded-xl shadow-sm border-l-4 border-blue-500 relative";
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-lg text-gray-800">${cita.nombre}</h3>
+                        <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded">${cita.hora}</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-1"><span class="font-semibold">Servicio:</span> ${cita.servicio}</p>
+                    <p class="text-sm text-gray-600 mb-4"><span class="font-semibold">Fecha:</span> ${fechaFormateada}</p>
+                    
+                    <div class="flex gap-2">
+                        <button onclick="completarCita(${cita.id})" class="flex-1 bg-green-100 text-green-700 hover:bg-green-200 font-semibold py-2 rounded text-sm transition">
+                            ✓ Completada
+                        </button>
+                        <button onclick="cancelarCita(${cita.id})" class="flex-1 bg-red-100 text-red-700 hover:bg-red-200 font-semibold py-2 rounded text-sm transition">
+                            ✕ Cancelar
+                        </button>
+                    </div>
+                `;
+                contenedor.appendChild(card);
+            });
+        }
+
+        function completarCita(id) {
+            if(confirm("¿Marcar esta cita como completada? Se eliminará de la lista.")) {
+                eliminarCita(id);
+            }
+        }
+
+        function cancelarCita(id) {
+            if(confirm("¿Seguro que deseas cancelar esta cita?")) {
+                eliminarCita(id);
+            }
+        }
+
+        function eliminarCita(id) {
+            let citas = JSON.parse(localStorage.getItem('citas_angel')) || [];
+            citas = citas.filter(c => c.id !== id);
+            localStorage.setItem('citas_angel', JSON.stringify(citas));
+            cargarCitas(); // Refrescar la pantalla
+        }
+    </script>
+</body>
+</html>
